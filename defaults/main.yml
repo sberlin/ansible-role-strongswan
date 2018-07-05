@@ -3,13 +3,8 @@
 
 strongswan_conn_default:
   auto: add
-  type: tunnel
   authby: psk
-  keyexchange: ike
-  ikelifetime: 3h
-  lifetime: 60m
-  margintime: 15m
-  keyingtries: 3
+  keyexchange: ikev2
   dpdaction: restart
   dpddelay: 30
 
