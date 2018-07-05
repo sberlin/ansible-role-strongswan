@@ -1,6 +1,5 @@
 # {{ ansible_managed }}
 
-# conn {{ item.0.name }} ({{ item.0.left.address }} <-> {{ item.0.right.address }})
 conn {{ item.0.name }}
   # Connection Settings
 {% for option in [
@@ -14,7 +13,9 @@ conn {{ item.0.name }}
 {%   endif %}
 {% endfor %}
   # Local Settings
+{%   if item.0.left.address is defined %}
   left={{ item.0.left.address }}
+{%   endif %}
 {% for option in [
        'ikeport', 'protoport', 'subnet', 'sourceip', 'allowany', 'id',
        'auth', 'ca', 'cert', 'sendcert', 'dns', 'firewall', 'updown' ] %}
@@ -23,7 +24,9 @@ conn {{ item.0.name }}
 {%   endif %}
 {% endfor %}
   # Remote Settings
+{%   if item.0.right.address is defined %}
   right={{ item.0.right.address }}
+{%   endif %}
 {% for option in [
        'ikeport', 'protoport', 'subnet', 'sourceip', 'allowany', 'id',
        'auth', 'ca', 'cert', 'sendcert', 'dns', 'firewall', 'updown' ] %}
