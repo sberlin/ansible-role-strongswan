@@ -10,3 +10,4 @@ strongswan_conn_default:
 
 strongswan_conn: []
 
+strongswan_charondebug: "cfg 2, dmn 2, ike 2, net 0"
