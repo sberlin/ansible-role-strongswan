@@ -27,4 +27,3 @@ strongswan_conn: []
 #     # further right-hand options here
 #   secret: abcde...z
 
-mtu: 0
