@@ -18,7 +18,7 @@ conn {{ item.0.name }}
 {%   endif %}
 {% for option in [
        'ikeport', 'protoport', 'subnet', 'sourceip', 'allowany', 'id',
-       'auth', 'ca', 'cert', 'sendcert', 'dns', 'firewall', 'updown' ] %}
+       'auth', 'ca', 'cert', 'sendcert', 'dns', 'firewall', 'updown', 'hostaccess' ] %}
 {%   if item.0.left[option] is defined %}
   left{{ option }}={{ item.0.left[option] }}
 {%   endif %}
@@ -29,7 +29,7 @@ conn {{ item.0.name }}
 {%   endif %}
 {% for option in [
        'ikeport', 'protoport', 'subnet', 'sourceip', 'allowany', 'id',
-       'auth', 'ca', 'cert', 'sendcert', 'dns', 'firewall', 'updown' ] %}
+       'auth', 'ca', 'cert', 'sendcert', 'dns', 'firewall', 'updown', 'hostaccess' ] %}
 {%   if item.0.right[option] is defined %}
   right{{ option }}={{ item.0.right[option] }}
 {%   endif %}
