@@ -1,4 +1,0 @@
----
-# ArchLinux-specific vars file for strongswan
-
-strongswan_config_base: /etc
