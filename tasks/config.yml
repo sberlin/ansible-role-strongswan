@@ -7,7 +7,7 @@
     state: directory
     owner: root
     group: root
-    mode: 0750
+    mode: 0700
   with_items:
     - ipsec.conf.d
     - ipsec.secrets.d
@@ -18,7 +18,7 @@
     dest: "{{ strongswan_config_base }}/{{ item }}"
     owner: root
     group: root
-    mode: 0640
+    mode: 0600
   notify:
     restart strongswan
   with_items:
@@ -31,7 +31,7 @@
     dest: "{{ strongswan_config_base }}/ipsec.conf.d/00-defaults.conf"
     owner: root
     group: root
-    mode: 0640
+    mode: 0600
   notify:
     restart strongswan
 
@@ -41,7 +41,7 @@
     dest: "{{ strongswan_config_base }}/ipsec.{{ item.1 }}.d/{{ item.0.priority | default(99) }}-{{ item.0.name }}.{{ item.1 }}"
     owner: root
     group: root
-    mode: 0640
+    mode: 0600
   with_nested:
     - "{{ strongswan_conn }}"
     - [ 'conf', 'secrets' ]
