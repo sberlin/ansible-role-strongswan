@@ -1,92 +1,69 @@
 # Ansible strongSwan Role
 
-An Ansible role for the configuration of strongSwan will support for Arch Linux,
-RHEL/CentOS, and Debian/Ubuntu.
+An Ansible role for the configuration of strongSwan with support for Ubuntu.
 
 ## Requirements
 
-This module as of right now only works on Arch, provided you install the package
-via the AUR, and you have UFW managing the firewall and have patched it to
-support GRE tunnels. This will need to be resolved before the role can be
-released publicly and/or added to Ansible Galaxy.
-
-strongSwan version >= 5.0.0 may also be required. This hasn't been confirmed
-yet.
-
 ## Role Variables
 
-    strongswan_packages:
-      - strongswan
+```YAML
+# defaults/main.yml
+strongswan_conn_default:
+  auto: add
+  authby: psk
+  keyexchange: ikev2
+  dpdaction: restart
+  dpddelay: 30
 
-Current list of packages to be installed. At the moment this is Arch Linux
-specific.
+strongswan_conn: []
 
-    strongswan_conn_default:
+strongswan_charondebug: "cfg 2, dmn 2, ike 2, net 0"
+```
+
+Connection information to be installed into strongSwan:
+
+```YAML
+strongswan_conn:
+  - name: dpt-1-server
+    conn:
       auto: add
       type: tunnel
       authby: psk
-      keyexchange: ike
-      ikelifetime: 3h
-      lifetime: 60m
-      margintime: 15m
-      keyingtries: 3
-      dpdaction: restart
-      dpddelay: 30
-
-Current defaults placed into the `%default` connection. Most of these follow the typical defaults for strongSwan (as if version ~5.0.0).
-
-    strongswan_conn: []
-    # - name: connection_name
-    #   conn:
-    #     # connection options go here, e.g.
-    #     ike: aes256gcm16-modp2048!
-    #     esp: aes256gcm16-modp2048!
-    #   left:
-    #     address: local_address
-    #     # further left-hand options here
-    #   right:
-    #     address: remote_address
-    #     # further right-hand options here
-    #   secret: abcde...z
-
-Connection information to be installed into strongSwan.
+      keyexchange: ikev1
+    left:
+      address: 1.2.3.4
+      firewall: "yes"
+      hostaccess: "yes"
+    right:
+      address: "%any"
+      sourceip: 10.0.0.0/24
+    secret: test
+```
 
 ## Example Playbook
 
-    - hosts: ipsec_server
-      roles:
-         - { role: jonathanio.strongswan, tags: ['ipsec'] }
-
-    ---
-    strongswan_hosts:
-      - name: example
-        conn:
-          auto: route
-          type: tunnel
-          authby: psk
-          keyexchange: ikev2
-          lifetime: 3h
-          ike: aes256gcm16-modp2048!
-          esp: aes256gcm16-modp2048!
-          ikelifetime: 24h
-        left:
-          address: 0.0.0.0/0
-          subnet: 192.168.100.0/24
-          protoport: 47
-          id: my
-          updown: /usr/lib/ipsec/_updown_nat
-        right:
-          address: 87.65.43.21
-          subnet: 192.168.101.0/24
-          protoport: 47
-          id: your
-          updown: /usr/lib/ipsec/_updown_nat
-        secret: something_needs_to_go_here
+```YAML
+- hosts: servers
+  roles:
+    - role: strongswan
+      vars:
+        strongswan_conn:
+          - name: dpt-1-server
+            conn:
+              auto: add
+              type: tunnel
+              authby: psk
+              keyexchange: ikev1
+            left:
+              address: 1.2.3.4
+              firewall: "yes"
+              hostaccess: "yes"
+            right:
+              address: "%any"
+              sourceip: 10.0.0.0/24
+            secret: test
+```
 
 ## License
 
 GPLv2
-
-## Author Information
-
-Jonathan Wright.
