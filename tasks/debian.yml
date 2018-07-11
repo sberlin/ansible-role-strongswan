@@ -22,8 +22,17 @@
     line: "{{ item }}"
     state: present
     insertbefore: "}"
-  notify: restart apparmor
   with_items:
     - "  /etc/ipsec.secrets.d/     r,"
     - "  /etc/ipsec.secrets.d/**   r,"
   when: charonstat.stat.exists
+
+- name: Check if apparmor service exists
+  stat:
+    path: /etc/init.d/apparmor
+  register: apparmorstat
+
+- name: Update apparmor profile for charon
+  debug: msg="AppArmor service exists"
+  when: apparmorstat.stat.exists
+  notify: restart apparmor
