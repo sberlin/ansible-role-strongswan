@@ -7,6 +7,10 @@ strongswan_conn_default:
   keyexchange: ikev2
   dpdaction: restart
   dpddelay: 30
+  left:
+    address: "%any"
+  right:
+    address: "%any"
 
 strongswan_conn: []
 
