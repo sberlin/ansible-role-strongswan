@@ -47,3 +47,16 @@
     - [ 'conf', 'secrets' ]
   notify:
     restart strongswan
+
+- name: Configure firewall script for handling NAT
+  template:
+    src: _updown_nat.j2
+    dest: /usr/lib/ipsec/_updown_nat_{{ item.name }}
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - "{{ strongswan_conn }}"
+  when: (item.left.subnet_nat is defined)
+  notify:
+    restart strongswan
