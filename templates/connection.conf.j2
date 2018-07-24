@@ -13,24 +13,24 @@ conn {{ item.0.name }}
 {%   endif %}
 {% endfor %}
   # Local Settings
-{%   if item.0.left.address is defined %}
+{%   if item.0.left is defined and item.0.left.address is defined %}
   left={{ item.0.left.address }}
 {%   endif %}
 {% for option in [
        'ikeport', 'protoport', 'subnet', 'sourceip', 'allowany', 'id',
        'auth', 'ca', 'cert', 'sendcert', 'dns', 'firewall', 'updown', 'hostaccess' ] %}
-{%   if item.0.left[option] is defined %}
+{%   if item.0.left is defined and item.0.left[option] is defined %}
   left{{ option }}={{ item.0.left[option] }}
 {%   endif %}
 {% endfor %}
   # Remote Settings
-{%   if item.0.right.address is defined %}
+{%   if item.0.right is defined and item.0.right.address is defined %}
   right={{ item.0.right.address }}
 {%   endif %}
 {% for option in [
        'ikeport', 'protoport', 'subnet', 'sourceip', 'allowany', 'id',
        'auth', 'ca', 'cert', 'sendcert', 'dns', 'firewall', 'updown', 'hostaccess' ] %}
-{%   if item.0.right[option] is defined %}
+{%   if item.0.right is defined and item.0.right[option] is defined %}
   right{{ option }}={{ item.0.right[option] }}
 {%   endif %}
 {% endfor %}
