@@ -217,20 +217,28 @@ fi
 
 case "$PLUTO_VERB:$1" in
 up-host:)
-	# connection to me coming up
-	# If you are doing a custom version, firewall commands go here.
+	iptables -t nat -I POSTROUTING -o $PLUTO_INTERFACE -s {{ item.left.subnet_nat }} \
+		$IPSEC_POLICY_OUT -j ACCEPT
+	iptables -t nat -I POSTROUTING -o $PLUTO_INTERFACE -s {{ item.left.subnet_nat }} \
+		-j MASQUERADE
 	;;
 down-host:)
-	# connection to me going down
-	# If you are doing a custom version, firewall commands go here.
+	iptables -t nat -D POSTROUTING -o $PLUTO_INTERFACE -s {{ item.left.subnet_nat }} \
+		$IPSEC_POLICY_OUT -j ACCEPT
+	iptables -t nat -D POSTROUTING -o $PLUTO_INTERFACE -s {{ item.left.subnet_nat }} \
+		-j MASQUERADE
 	;;
 up-client:)
-	# connection to my client subnet coming up
-	# If you are doing a custom version, firewall commands go here.
+	iptables -t nat -I POSTROUTING -o $PLUTO_INTERFACE -s {{ item.left.subnet_nat }} \
+		$IPSEC_POLICY_OUT -j ACCEPT
+	iptables -t nat -I POSTROUTING -o $PLUTO_INTERFACE -s {{ item.left.subnet_nat }} \
+		-j MASQUERADE
 	;;
 down-client:)
-	# connection to my client subnet going down
-	# If you are doing a custom version, firewall commands go here.
+	iptables -t nat -D POSTROUTING -o $PLUTO_INTERFACE -s {{ item.left.subnet_nat }} \
+		$IPSEC_POLICY_OUT -j ACCEPT
+	iptables -t nat -D POSTROUTING -o $PLUTO_INTERFACE -s {{ item.left.subnet_nat }} \
+		-j MASQUERADE
 	;;
 up-host:iptables)
 	# connection to me, with (left/right)firewall=yes, coming up
