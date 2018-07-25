@@ -14,6 +14,10 @@ strongswan_conn_default:
   keyexchange: ikev2
   dpdaction: restart
   dpddelay: 30
+  left:
+    address: "%any"
+  right:
+    address: "%any"
 
 strongswan_conn: []
 
@@ -36,7 +40,6 @@ strongswan_conn:
       hostaccess: "yes"
     right:
       address: "%any"
-      sourceip: 10.0.0.0/24
     secret: test
 ```
 
@@ -60,7 +63,6 @@ strongswan_conn:
               hostaccess: "yes"
             right:
               address: "%any"
-              sourceip: 10.0.0.0/24
             secret: test
 ```
 
