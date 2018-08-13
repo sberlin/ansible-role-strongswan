@@ -6,5 +6,11 @@
     ansible_os_family == "Debian"
 
 - include: config.yml
+  vars:
+    connection: "{{ item }}"
+  loop: "{{ strongswan_conn }}"
+  loop_control:
+    loop_var: conn
+
 - include: service.yml
 - include: firewall.yml

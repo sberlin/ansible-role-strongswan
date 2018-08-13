@@ -37,26 +37,24 @@
 
 - name: Configure strongSwan per-connection settings
   template:
-    src: "connection.{{ item.1 }}.j2"
-    dest: "{{ strongswan_config_base }}/ipsec.{{ item.1 }}.d/{{ item.0.priority | default(99) }}-{{ item.0.name }}.{{ item.1 }}"
+    src: "connection.{{ item }}.j2"
+    dest: "{{ strongswan_config_base }}/ipsec.{{ item }}.d/{{ conn.priority | default(99) }}-{{ conn.name }}.{{ item }}"
     owner: root
     group: root
     mode: 0600
-  with_nested:
-    - "{{ strongswan_conn }}"
-    - [ 'conf', 'secrets' ]
+  with_items:
+    - conf
+    - secrets
   notify:
     restart strongswan
 
 - name: Configure firewall script for handling NAT
   template:
     src: _updown_nat.j2
-    dest: /usr/lib/ipsec/_updown_nat_{{ item.name }}
+    dest: /usr/lib/ipsec/_updown_nat_{{ conn.name }}
     owner: root
     group: root
     mode: 0755
-  with_items:
-    - "{{ strongswan_conn }}"
-  when: (item.left.subnet_nat is defined)
+  when: (conn.left.subnet_nat is defined)
   notify:
     restart strongswan
