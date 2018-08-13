@@ -7,7 +7,7 @@ conn {{ conn.name }}
        'fragmentation', 'ah', 'esp', 'compress', 'ikelifetime',
        'ikelife', 'keyexchange', 'keytime', 'lifetime', 'margintime',
        'rekeymargin', 'rekeyfuzz', 'keyingtries', 'dpdaction', 'dpddelay', 'mask',
-       'reauth', 'rekey', 'dpdaction', 'dpdtimeout' ] %}
+       'reauth', 'rekey', 'dpdaction', 'dpdtimeout', 'eap_identity' ] %}
 {%   if conn.conn[option] is defined %}
   {{ option }}={{ conn.conn[option] }}
 {%   endif %}
