@@ -1,0 +1,35 @@
+---
+# plugins-specific task file for strongswan
+
+- name: Copy plugin configuration
+  copy:
+    src: /usr/share/strongswan/templates/config/plugins/{{ plugin.filename }}
+    remote_src: yes
+    dest: "{{ strongswan_config_base }}/strongswan.d/charon/{{ plugin.filename }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    restart strongswan
+
+- name: Activate plugin
+  lineinfile:
+    path: "{{ strongswan_config_base }}/strongswan.d/charon/{{ plugin.filename }}"
+    regexp: '^(\s*)load\s*=\s*.*$'
+    line: '\1load = yes'
+    backrefs: yes
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    restart strongswan
+
+- name: Configure plugin
+  blockinfile:
+    path: "{{ strongswan_config_base }}/strongswan.d/charon/{{ plugin.filename }}"
+    block: "{{ item.block }}"
+    insertafter: "{{ item.insertafter }}"
+  with_items:
+    - "{{ plugin.config }}"
+  when:
+    - plugin.config is defined

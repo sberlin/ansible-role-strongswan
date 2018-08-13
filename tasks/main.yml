@@ -5,6 +5,11 @@
   when:
     ansible_os_family == "Debian"
 
+- include: plugin.yml
+  loop: "{{ plugins }}"
+  loop_control:
+    loop_var: plugin
+
 - include: config.yml
   vars:
     connection: "{{ item }}"
