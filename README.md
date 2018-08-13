@@ -45,6 +45,7 @@ strongswan_conn:
 
 ## Example Playbook
 
+IKEv1:
 ```YAML
 - hosts: servers
   roles:
@@ -63,8 +64,47 @@ strongswan_conn:
               hostaccess: "yes"
             right:
               address: "%any"
-            secret: test
+            credentials:
+              - type: PSK
+                secret: test
 ```
+
+IKEv2:
+```YAML
+- hosts: servers
+  roles:
+    - role: strongswan
+      vars:
+        strongswan_conn:
+          - name: dpt-1-server
+            conn:
+              auto: add
+              type: tunnel
+              keyexchange: ikev2
+            left:
+              address: 1.2.3.4
+              subnet: 0.0.0.0/0
+              cert: server-cert.pem
+              firewall: "yes"
+            right:
+              auth: eap-radius
+            credentials:
+              - type: RSA
+                secret: server-key.pem
+        plugins:
+          - filename: eap-radius.conf
+            config:
+              block: |
+                  server-0 {
+                      address = 127.0.0.1
+                      secret = test
+                  }
+              insertafter: 'servers \{'
+```
+
+Certificates and keys have to be provided manually in:
+* /etc/ipsec.d/certs/
+* /etc/ipsec.d/private/
 
 ## License
 
