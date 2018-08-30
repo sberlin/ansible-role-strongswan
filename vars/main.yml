@@ -3,3 +3,4 @@
 
 strongswan_packages:
   - strongswan
+  - libcharon-extra-plugins
