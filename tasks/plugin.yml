@@ -27,9 +27,7 @@
 - name: Configure plugin
   blockinfile:
     path: "{{ strongswan_config_base }}/strongswan.d/charon/{{ plugin.filename }}"
-    block: "{{ item.block }}"
-    insertafter: "{{ item.insertafter }}"
-  with_items:
-    - "{{ plugin.config }}"
+    block: "{{ plugin.config.block }}"
+    insertafter: "{{ plugin.config.insertafter }}"
   when:
     - plugin.config is defined
